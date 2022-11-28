@@ -38,4 +38,11 @@ public class InfixNode extends InnerNode implements Standardizable{
 
         return newNode;
     }
+
+    @Override
+    public void removeChildren() {
+        E1 = null;
+        N = null;
+        E2 = null;
+    }
 }

@@ -1,9 +1,14 @@
+import nodes.Node;
+
 import java.io.FileNotFoundException;
 
 public class Main {
     public static void main(String[] args) {
         try{
             ASTTree astTree = ASTParser.parse(args[0]);
+            astTree.traverse();
+            astTree.standardize();
+            System.out.println("\nStandardized Tree\n");
             astTree.traverse();
         }
         catch (FileNotFoundException | IllegalArgumentException e){

@@ -24,16 +24,23 @@ public class LetNode extends InnerNode implements Standardizable{
 
     @Override
     public Node standardize() {
-        LambdaNode newLeft = new LambdaNode();
         if (left instanceof Standardizable) this.left = ((Standardizable) left).standardize();
 
         if (left instanceof EqualNode){
+            LambdaNode newLeft = new LambdaNode();
             newLeft.left = ((EqualNode) left).left;
             newLeft.right = right;
-            this.right = ((EqualNode) left).right;
-            this.left = newLeft;
-            return this;
+            GammaNode newNode = new GammaNode();
+            newNode.right = ((EqualNode) left).right;
+            newNode.left = newLeft;
+            return newNode;
         }
         else throw new IllegalStateException("AST cannot be standardized");
+    }
+
+    @Override
+    public void removeChildren() {
+        left = null;
+        right = null;
     }
 }

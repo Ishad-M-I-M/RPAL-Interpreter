@@ -21,4 +21,10 @@ public class BopNode extends InnerNode{
     public List<Node> getChildren(){
         return new ArrayList<Node>(Arrays.asList(left, right));
     }
+
+    @Override
+    public void removeChildren() {
+        left = null;
+        right = null;
+    }
 }

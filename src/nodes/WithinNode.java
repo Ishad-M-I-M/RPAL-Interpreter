@@ -48,4 +48,10 @@ public class WithinNode extends InnerNode implements Standardizable{
 
         return newNode;
     }
+
+    @Override
+    public void removeChildren() {
+        left = null;
+        right = null;
+    }
 }

@@ -21,4 +21,10 @@ public class LambdaNode extends InnerNode{
         return new ArrayList<Node>(Arrays.asList(left, right));
     }
 
+    @Override
+    public void removeChildren() {
+        left = null;
+        right = null;
+    }
+
 }

@@ -18,4 +18,9 @@ public class TauNode extends InnerNode{
     public List<Node> getChildren() {
         return children;
     }
+
+    @Override
+    public void removeChildren() {
+        children = new ArrayList<>();
+    }
 }

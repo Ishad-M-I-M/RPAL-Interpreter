@@ -40,4 +40,10 @@ public class WhereNode extends InnerNode implements Standardizable{
         }
         else throw new IllegalStateException("AST cannot be standardized");
     }
+
+    @Override
+    public void removeChildren() {
+        left = null;
+        right = null;
+    }
 }

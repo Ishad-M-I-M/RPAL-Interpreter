@@ -25,4 +25,11 @@ public class ArrowNode extends InnerNode{
     public List<Node> getChildren() {
         return new ArrayList<Node>(Arrays.asList(expression, trueNode, falseNode));
     }
+
+    @Override
+    public void removeChildren() {
+        expression = null;
+        trueNode = null;
+        falseNode = null;
+    }
 }

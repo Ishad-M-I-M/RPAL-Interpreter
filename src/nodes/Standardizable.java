@@ -8,5 +8,5 @@ public interface Standardizable {
      * @return standardize version of the node.
      * Not necessarily standardize upto depth of that node.
      * */
-    public Node standardize();
+    Node standardize();
 }

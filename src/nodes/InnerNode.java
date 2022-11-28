@@ -11,4 +11,6 @@ public abstract class InnerNode extends Node {
     public abstract void setChild(Node child);
 
     public abstract List<Node> getChildren();
+
+    public abstract void removeChildren();
 }

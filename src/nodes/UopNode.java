@@ -21,4 +21,9 @@ public class UopNode extends InnerNode{
         return new ArrayList<>(Arrays.asList(child));
     }
 
+    @Override
+    public void removeChildren() {
+        child = null;
+    }
+
 }

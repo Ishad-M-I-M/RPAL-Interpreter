@@ -15,7 +15,7 @@ public class FcnFormNode extends InnerNode implements Standardizable{
     @Override
     public void setChild(Node child) {
         if (functionName == null) this.functionName = (IDNode) child;
-        else if (expression == null && child instanceof LeafNode) variables.add(child);
+        else if (expression == null && (child instanceof LeafNode || child instanceof CommaNode)) variables.add(child);
         else if (expression == null) this.expression = child;
         else throw new IllegalStateException("Cannot assign more children");
     }
@@ -33,10 +33,10 @@ public class FcnFormNode extends InnerNode implements Standardizable{
     public Node standardize() {
         Node newRight = expression;
         while (!variables.isEmpty()){
-            GammaNode gammaNode = new GammaNode();
-            gammaNode.left = variables.remove(variables.size() -1);
-            gammaNode.right = newRight;
-            newRight = gammaNode;
+            LambdaNode lambdaNode = new LambdaNode();
+            lambdaNode.left = variables.remove(variables.size() -1);
+            lambdaNode.right = newRight;
+            newRight = lambdaNode;
         }
 
         EqualNode newNode = new EqualNode();
@@ -44,5 +44,12 @@ public class FcnFormNode extends InnerNode implements Standardizable{
         newNode.right = newRight;
 
         return newNode;
+    }
+
+    @Override
+    public void removeChildren() {
+        this.functionName = null;
+        this.variables = null;
+        this.expression = null;
     }
 }

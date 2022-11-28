@@ -41,4 +41,9 @@ public class RecNode extends InnerNode implements Standardizable{
         }
         else throw new IllegalStateException("AST cannot be standardized");
     }
+
+    @Override
+    public void removeChildren() {
+        child = null;
+    }
 }
