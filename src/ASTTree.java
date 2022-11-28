@@ -26,7 +26,7 @@ public class ASTTree {
 
     }
 
-    public void traverse(Node root, String prefix){
+    private void traverse(Node root, String prefix){
         if (root instanceof LeafNode){
             System.out.println(prefix+root.name);
         }
@@ -43,33 +43,32 @@ public class ASTTree {
      * Standardize the tree
      * */
     public Node standardize(){
+        standardizeChildren(root);
+        if (root instanceof Standardizable) this.root = ((Standardizable) root).standardize();
+        return root;
+    }
+
+    private Node standardize(Node node){
+        standardizeChildren(node);
+        if (node instanceof Standardizable) return  ((Standardizable) node).standardize();
+        else return node;
+    }
+
+    private void standardizeChildren(Node root) {
         if (root instanceof InnerNode){
             List<Node> nodes = new ArrayList<>();
             for (Node child:
-                    ((InnerNode)root).getChildren()) {
+                    ((InnerNode) root).getChildren()) {
                 nodes.add(standardize(child));
             }
 
             ((InnerNode) root).removeChildren();
             for (Node newNode:
-                 nodes) {
+                    nodes) {
                 ((InnerNode) root).setChild(newNode);
             }
 
         }
-        if (root instanceof Standardizable) this.root = ((Standardizable) root).standardize();
-        return root;
-    }
-
-    public Node standardize(Node node){
-        if (node instanceof InnerNode){
-            for (Node child:
-                    ((InnerNode)node).getChildren()) {
-                standardize(child);
-            }
-        }
-        if (node instanceof Standardizable) return  ((Standardizable) node).standardize();
-        else return node;
     }
 
 }

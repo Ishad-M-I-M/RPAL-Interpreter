@@ -49,7 +49,7 @@ public class FcnFormNode extends InnerNode implements Standardizable{
     @Override
     public void removeChildren() {
         this.functionName = null;
-        this.variables = null;
+        this.variables = new ArrayList<>();
         this.expression = null;
     }
 }
