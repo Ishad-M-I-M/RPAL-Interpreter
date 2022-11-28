@@ -57,6 +57,8 @@ public class NodeFactory {
                 case "Y" -> new YNode();
                 case "=" -> new EqualNode();
                 case "," -> new CommaNode();
+                case "within" -> new WithinNode();
+                case "and" -> new AndNode();
                 default -> throw new IllegalArgumentException("Not a valid argument : " + type);
             };
         }
