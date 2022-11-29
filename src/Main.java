@@ -1,4 +1,5 @@
-import nodes.Node;
+import ast.ASTParser;
+import ast.ASTTree;
 
 import java.io.FileNotFoundException;
 
@@ -11,7 +12,7 @@ public class Main {
             System.out.println("\nStandardized Tree\n");
             astTree.traverse();
         }
-        catch (FileNotFoundException | IllegalArgumentException e){
+        catch (FileNotFoundException | IllegalArgumentException | IllegalStateException e){
             System.out.println(e.getMessage());
         } catch (Exception e){
             e.printStackTrace();
