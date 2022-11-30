@@ -1,10 +1,10 @@
 package csemachine.elements;
 
-public class Name extends Element{
+public class Variable extends Element{
     public String name;
     public Object value;
 
-    Name(String name){
+    public Variable(String name){
         this.name = name;
     }
 }
