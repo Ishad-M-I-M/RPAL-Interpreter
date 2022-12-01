@@ -37,10 +37,14 @@ public class Machine {
         toBeParsed.add(astTree.root);
 
         int tag = 0;
+        int lambdaTag = 1;
         while (! toBeParsed.isEmpty()){
             Node curr = toBeParsed.poll();
             MachineControl controlStructure = new MachineControl();
-            flatten(tag, curr, controlStructure, toBeParsed);
+            lambdaTag = flatten(lambdaTag, curr, controlStructure, toBeParsed);
+
+            if (curr instanceof LambdaNode) lambdaTag++;
+
             controlStructures.add(new Delta(tag++, controlStructure));
         }
 
@@ -55,24 +59,26 @@ public class Machine {
      *
      * @return tag after incrementing
      * */
-    private void flatten(int tag, Node curr, MachineControl control, Queue<Node> toBeParsed){
+    private int flatten(int tag, Node curr, MachineControl control, Queue<Node> toBeParsed){
         if (curr instanceof LeafNode){
             control.push(getElement(curr, tag));
         }
         else{
 
             if (curr instanceof LambdaNode){
-                control.push(getElement(curr, ++tag));
+                control.push(getElement(curr, tag));
                 toBeParsed.add(((LambdaNode) curr).right);
             }
             else{
                 control.push(getElement(curr, tag));
                 for (Node child:
                         ((InnerNode)curr).getChildren()) {
-                    flatten(tag, child, control, toBeParsed);
+                    tag = flatten(tag, child, control, toBeParsed);
+                    if (child instanceof LambdaNode) tag++;
                 }
             }
         }
+        return tag;
     }
 
     /**
