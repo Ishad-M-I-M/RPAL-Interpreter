@@ -1,7 +1,7 @@
 package ast.nodes;
 
 public class PrimitiveNode extends LeafNode{
-    Object value;
+    public Object value;
     public PrimitiveNode(String type, String value) {
         super(value);
         switch (type) {

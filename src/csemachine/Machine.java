@@ -16,7 +16,7 @@ public class Machine {
     /**
      * Input need to be a Standardized tree
      * */
-    Machine(ASTTree astTree){
+    public Machine(ASTTree astTree){
         this.astTree = astTree;
     }
 
@@ -31,7 +31,7 @@ public class Machine {
     /**
      * @return flatten control structure as list of Deltas
      * */
-    private List<Delta> getControlStructures(){
+    public List<Delta> getControlStructures(){
         List<Delta> controlStructures = new ArrayList<>();
         Queue<Node> toBeParsed = new ArrayDeque<>();
         toBeParsed.add(astTree.root);
@@ -39,10 +39,12 @@ public class Machine {
         int tag = 0;
         while (! toBeParsed.isEmpty()){
             Node curr = toBeParsed.poll();
-
+            MachineControl controlStructure = new MachineControl();
+            flatten(tag, curr, controlStructure, toBeParsed);
+            controlStructures.add(new Delta(tag++, controlStructure));
         }
 
-        return null;
+        return controlStructures;
     }
 
     /**
@@ -53,19 +55,24 @@ public class Machine {
      *
      * @return tag after incrementing
      * */
-    private int flatten(int tag, Node curr, MachineControl control, List<Delta> controlStructures, Queue<Node> toBeParsed){
+    private void flatten(int tag, Node curr, MachineControl control, Queue<Node> toBeParsed){
         if (curr instanceof LeafNode){
-
+            control.push(getElement(curr, tag));
         }
         else{
-            System.out.println(curr.name);
-            for (Node child:
-                    ((InnerNode)curr).getChildren()) {
 
+            if (curr instanceof LambdaNode){
+                control.push(getElement(curr, ++tag));
+                toBeParsed.add(((LambdaNode) curr).right);
+            }
+            else{
+                control.push(getElement(curr, tag));
+                for (Node child:
+                        ((InnerNode)curr).getChildren()) {
+                    flatten(tag, child, control, toBeParsed);
+                }
             }
         }
-
-        return tag;
     }
 
     /**
@@ -74,7 +81,14 @@ public class Machine {
     private Element getElement(Node node, int tag) throws IllegalArgumentException{
         return switch (node){
             case GammaNode n -> new Gamma();
-            case LambdaNode n -> (n.left instanceof IDNode)?new Lambda(tag, new Variable(n.left.name)): null;
+            case LambdaNode n -> new Lambda(tag, new Variable(n.left.name));
+            case ArrowNode n -> new Beta();
+            case UopNode n -> new Uop(n.name);
+            case BopNode n -> new Bop(n.name);
+            case TauNode n -> new Tor(n.getChildren().size());
+            case IDNode n -> new Variable(n.name);
+            case PrimitiveNode n -> new Primitive(n.value);
+            case YNode n -> new Y();
             default -> throw new IllegalArgumentException("Unexpected value: " + node.name);
         };
     }
