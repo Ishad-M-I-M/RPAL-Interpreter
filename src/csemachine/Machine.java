@@ -69,6 +69,12 @@ public class Machine {
                 control.push(getElement(curr, tag));
                 toBeParsed.add(((LambdaNode) curr).right);
             }
+            else if (curr instanceof ArrowNode){
+                control.push(getElement(curr, tag));
+                tag = flatten(tag, ((ArrowNode) curr).expression, control, toBeParsed);
+                toBeParsed.add(((ArrowNode) curr).trueNode);
+                toBeParsed.add(((ArrowNode) curr).falseNode);
+            }
             else{
                 control.push(getElement(curr, tag));
                 for (Node child:
@@ -87,7 +93,7 @@ public class Machine {
     private Element getElement(Node node, int tag) throws IllegalArgumentException{
         return switch (node){
             case GammaNode n -> new Gamma();
-            case LambdaNode n -> new Lambda(tag, new Variable(n.left.name));
+            case LambdaNode n ->  new Lambda(tag, getVariable(n.left, tag));
             case ArrowNode n -> new Beta();
             case UopNode n -> new Uop(n.name);
             case BopNode n -> new Bop(n.name);
@@ -97,5 +103,20 @@ public class Machine {
             case YNode n -> new Y();
             default -> throw new IllegalArgumentException("Unexpected value: " + node.name);
         };
+    }
+
+    /**
+     * @return bounded variable for lambda
+     * */
+    private Element getVariable(Node node, int tag){
+        if (node instanceof CommaNode){
+            List<Variable> children = new ArrayList<>();
+            for (Node child:
+                 ((CommaNode) node).getChildren()) {
+                children.add((Variable) getElement(child, tag));
+            }
+            return new Comma(children);
+        }
+        else return new Variable(node.name);
     }
 }

@@ -3,10 +3,12 @@ package csemachine.elements;
 public class Lambda extends Element{
     public int environmentTag;
     public int controlTag;
-    public Variable boundedVariable;
+    public Element boundedVariable;
 
-    public Lambda(int controlTag, Variable boundedVariable){
+    public Lambda(int controlTag, Element boundedVariable){
         this.controlTag = controlTag;
-        this.boundedVariable = boundedVariable;
+        if (boundedVariable instanceof Variable || boundedVariable instanceof Comma)
+            this.boundedVariable = boundedVariable;
+        else throw new IllegalArgumentException("Unsupported variable :"+boundedVariable.toString());
     }
 }
