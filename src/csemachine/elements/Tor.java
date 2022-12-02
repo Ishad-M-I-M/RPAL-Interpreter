@@ -1,8 +1,12 @@
 package csemachine.elements;
 
+import java.util.ArrayList;
+
 public class Tor extends Element{
     public int count;
+    public ArrayList<Primitive> children;
     public Tor(int count){
         this.count = count;
+        children = new ArrayList<>();
     }
 }

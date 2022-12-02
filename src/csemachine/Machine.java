@@ -89,9 +89,10 @@ public class Machine {
 
                         // Creating new Environment and adding the assignments
                         Environment newEnv = new Environment(envTag++);
+                        Tor tor = (Tor) stack.pop();
                         for (Variable v:
                                 ((Comma) ((Lambda) operator).boundedVariable).children) {
-                            Primitive primitive = (Primitive) stack.pop();
+                            Primitive primitive = tor.children.remove(0);
                             newEnv.addAssignment(v.name, primitive);
                         }
                         control.push(newEnv);
@@ -108,12 +109,12 @@ public class Machine {
                 }
 
                 // ********************** CSE Rule 10 **********************
-                else if (operator instanceof Comma){
+                else if (operator instanceof Tor){
                     // Take the next element and get the index needed.
                     // Push the variable in the given index
                     Primitive primitive = (Primitive) stack.pop();
                     int index = (int) primitive.value;
-                    stack.push(((Comma) operator).children.get(index), environment);
+                    stack.push(((Tor) operator).children.get(index), environment);
                 }
 
                 // ********************** CSE Rule 12 **********************
@@ -195,11 +196,10 @@ public class Machine {
 
             // ********************** CSE Rule 9 **********************
             else if (element instanceof Tor) {
-                Comma comma = new Comma(new ArrayList<>());
                 for(int i=0; i < ((Tor) element).count; i++){
-                    comma.children.add((Variable) stack.pop());
+                    ((Tor) element).children.add((Primitive) stack.pop());
                 }
-                stack.push(comma, environment);
+                stack.push(element, environment);
             }
 
 
