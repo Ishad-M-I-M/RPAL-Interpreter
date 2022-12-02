@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Environment extends Element{
     public int tag;
-    private Map<String, Object> assignments;
+    private Map<String, Element> assignments;
     public Environment(int tag){
         this.tag = tag;
         assignments = new HashMap<>();
@@ -15,14 +15,14 @@ public class Environment extends Element{
      * @return assignment value for the variable
      * If not found return null
      * */
-    public Object getValue(String variableName){
+    public Element getValue(String variableName){
         return assignments.getOrDefault(variableName, null);
     }
 
     /**
      * Add assignments to the environment
      * */
-    public void addAssignment(String name, Object value){
+    public void addAssignment(String name, Element value){
         assignments.put(name,value);
     }
 }

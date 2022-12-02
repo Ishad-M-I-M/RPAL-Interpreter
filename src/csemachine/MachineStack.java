@@ -27,10 +27,9 @@ public class MachineStack {
         //TODO: apply the values from the environment
         // or tag the environment symbol with lambda
         if(element instanceof Variable){
-            Object value = currEnv.findValue(((Variable) element).name);
+            Element value = currEnv.findValue(((Variable) element).name);
             if ( value != null) {
-                Primitive primitive = new Primitive(value);
-                stack.push(primitive);
+                stack.push(value);
             }
 //            else throw new IllegalArgumentException("Variable not reachable from current environment: "+((Variable) element).name);
             else stack.push(element);

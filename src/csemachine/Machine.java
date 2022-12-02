@@ -71,11 +71,11 @@ public class Machine {
 
                     // ********************** CSE Rule 4 **********************
                     if(((Lambda) operator).boundedVariable instanceof Variable){
-                        Primitive operand = (Primitive) stack.pop();
+                        Element operand = stack.pop();
 
                         // Creating new Environment and adding the assignment
                         Environment newEnv = new Environment(envTag++);
-                        newEnv.addAssignment( ((Variable) ((Lambda) operator).boundedVariable).name, operand.value );
+                        newEnv.addAssignment( ((Variable) ((Lambda) operator).boundedVariable).name, operand );
                         control.push(newEnv);
                         stack.push(newEnv, environment);
                         environment.addNewEnvironment(newEnv);
@@ -92,7 +92,7 @@ public class Machine {
                         for (Variable v:
                                 ((Comma) ((Lambda) operator).boundedVariable).children) {
                             Primitive primitive = (Primitive) stack.pop();
-                            newEnv.addAssignment(v.name, primitive.value);
+                            newEnv.addAssignment(v.name, primitive);
                         }
                         control.push(newEnv);
                         stack.push(newEnv, environment);
@@ -148,8 +148,6 @@ public class Machine {
                 // popping out the corresponding  env element
                 Element environment1 = stack.pop();
                 if(! (environment1 instanceof Environment)) throw new IllegalStateException("Unexpected element found while applying CSE Rule 5 :"+environment1.toString());
-
-                environment.removeEnvironment();
 
                 stack.push(value, environment);
             }

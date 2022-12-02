@@ -1,5 +1,6 @@
 package csemachine;
 
+import csemachine.elements.Element;
 import csemachine.elements.Environment;
 
 /**
@@ -20,18 +21,12 @@ public class MachineEnvironment {
         this.current = new Node(environment, current);
     }
 
-    /**
-     * move to parent Environment
-     * */
-    public void removeEnvironment(){
-        this.current = current.getParent();
-    }
 
     /**
      * @return resolved variable value
      * */
-    public Object findValue(String variableName){
-        Object found = null;
+    public Element findValue(String variableName){
+        Element found = null;
         Node searchNode = current;
         while (found == null){
             found = searchNode.environment.getValue(variableName);
