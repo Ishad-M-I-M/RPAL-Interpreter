@@ -17,6 +17,10 @@ public class Main {
             System.out.println("\n CSE Machine control structures \n");
             Machine machine = new Machine(astTree);
             System.out.println(machine.getControlStructures());
+
+            // evaluating
+            System.out.println("\nOutput of the program:");
+            machine.evaluate();
         }
         catch (FileNotFoundException | IllegalArgumentException | IllegalStateException e){
             System.out.println(e.getMessage());

@@ -12,19 +12,114 @@ import csemachine.elements.*;
  * */
 public class Machine {
     private ASTTree astTree;
+    private MachineControl control;
+    private MachineStack stack;
+    private MachineEnvironment environment;
+
+    private final ArrayList<String> definedFunctions = new ArrayList<>(Arrays.asList("Print", "Conc", "Stern", "Stem"));
 
     /**
      * Input need to be a Standardized tree
      * */
     public Machine(ASTTree astTree){
         this.astTree = astTree;
+        control = new MachineControl();
+        stack = new MachineStack();
+        environment = new MachineEnvironment();
     }
 
     /**
      * @return result of the expression in AST
      * */
     public Object evaluate(){
-        //TODO : evaluate the expression using 13 CSE Machine rules
+        Map<Integer, Queue<Element>> controlStructures = controlStructureArrayToMap(getControlStructures());
+
+        int envTag = 0;
+        Environment initialEnv = new Environment(envTag++);
+        control.push(initialEnv);
+
+        pushToControl(controlStructures.get(0));
+
+        while (!control.isEmpty()){
+            Element element = control.pop();
+
+            // Applying CSE rules accordingly
+
+            // CSE Rule 1
+            if (element instanceof Variable || element instanceof Primitive){
+                stack.push(element, environment);
+            }
+
+            // CSE Rule 2
+            else if(element instanceof Lambda){
+                stack.push(element, environment);
+            }
+            // CSE Rule 3
+            else if (element instanceof Gamma) {
+                Element operator = stack.pop();
+                if(operator instanceof Variable){
+                    // handling defined functions
+                    String functionName = (String) ((Variable) operator).name;
+                    if (definedFunctions.contains(functionName)) functionCall(functionName);
+                    //TODO: handle function calls
+                }
+                else{
+                    throw new IllegalArgumentException("Unsupported operator");
+                }
+            }
+
+            // CSE Rule 4
+
+            // CSE Rule 5
+
+
+            // CSE Rule 6
+            else if(element instanceof Bop){
+                Element op1 = stack.pop();
+                Element op2 = stack.pop();
+
+                Object operand1, operand2;
+                if (op1 instanceof Variable) operand1 = ((Variable) op1).value;
+                else if (op1 instanceof Primitive) operand1 = ((Primitive) op1).value;
+                else throw new IllegalArgumentException("Unsupported operand");
+
+                if (op2 instanceof Variable) operand2 = ((Variable) op2).value;
+                else if (op2 instanceof Primitive) operand2 = ((Primitive) op2).value;
+                else throw new IllegalArgumentException("Unsupported operand");
+
+                Element result = new Primitive(((Bop)element).apply(operand1, operand2));
+                stack.push(result, environment);
+            }
+
+            // CSE Rule 7
+            else if(element instanceof Uop){
+                Element op1 = stack.pop();
+
+                Object operand1;
+                if (op1 instanceof Variable) operand1 = ((Variable) op1).value;
+                else if (op1 instanceof Primitive) operand1 = ((Primitive) op1).value;
+                else throw new IllegalArgumentException("Unsupported operand");
+
+                Element result = new Primitive(((Uop)element).apply(operand1));
+                stack.push(result, environment);
+            }
+
+            // CSE Rule 8
+
+            // CSE Rule 9
+
+            // CSE Rule 10
+
+            // CSE Rule 10
+
+            // CSE Rule 11
+
+            // CSE Rule 12
+
+            // CSE Rule 13
+
+        }
+
         return null;
     }
 
@@ -50,6 +145,29 @@ public class Machine {
 
         return controlStructures;
     }
+
+    private Map<Integer, Queue<Element>> controlStructureArrayToMap(List<Delta> array){
+        Map<Integer, Queue<Element>> map = new HashMap<>();
+        for (Delta d:
+             array) {
+            ArrayDeque<Element> elements = new ArrayDeque<>();
+            while (!d.control.isEmpty()){
+                elements.addFirst(d.control.pop());
+            }
+            map.put(d.tag, elements);
+        }
+        return map;
+    }
+
+    /**
+     * push control structure to the control
+     * */
+    private void pushToControl(Queue<Element> elements){
+        while (! elements.isEmpty()){
+            control.push(elements.poll());
+        }
+    }
+
 
     /**
      * Traverse in depth first method
@@ -118,5 +236,21 @@ public class Machine {
             return new Comma(children);
         }
         else return new Variable(node.name);
+    }
+
+    /**
+     * Apply defined Functions
+     * */
+    private void functionCall(String functionName){
+        if (functionName.equals("Print")){
+            Element element = stack.pop();
+            if (element instanceof Primitive)
+                System.out.println(((Primitive) element).value);
+            else throw new IllegalArgumentException("Operation is not applicable");
+        }
+        //TODO: implement other defined functions
+        else{
+            throw new IllegalArgumentException("Not a valid functions");
+        }
     }
 }

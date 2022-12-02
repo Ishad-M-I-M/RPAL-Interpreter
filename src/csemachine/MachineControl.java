@@ -24,4 +24,8 @@ public class MachineControl {
     protected void push(Element element){
         control.push(element);
     }
+
+    protected boolean isEmpty(){
+        return control.isEmpty();
+    }
 }
