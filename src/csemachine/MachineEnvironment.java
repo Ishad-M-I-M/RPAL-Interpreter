@@ -36,8 +36,10 @@ public class MachineEnvironment {
         while (found == null){
             found = searchNode.environment.getValue(variableName);
             if(searchNode.getParent() == null && found == null){
-                throw new IllegalArgumentException("Variable in not reachable from current environment :"+variableName);
+//                throw new IllegalArgumentException("Variable in not reachable from current environment :"+variableName);
+                break;
             }
+            searchNode = searchNode.getParent();
         }
         return found;
     }

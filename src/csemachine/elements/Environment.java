@@ -18,4 +18,11 @@ public class Environment extends Element{
     public Object getValue(String variableName){
         return assignments.getOrDefault(variableName, null);
     }
+
+    /**
+     * Add assignments to the environment
+     * */
+    public void addAssignment(String name, Object value){
+        assignments.put(name,value);
+    }
 }
