@@ -48,7 +48,7 @@ public class Machine {
             // Applying CSE rules accordingly
 
             // ********************** CSE Rule 1 **********************
-            if (element instanceof Variable || element instanceof Primitive){
+            if (element instanceof Variable || element instanceof Primitive || element instanceof Y){
                 stack.push(element, environment);
             }
 
