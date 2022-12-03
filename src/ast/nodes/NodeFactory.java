@@ -55,7 +55,7 @@ public class NodeFactory {
                 case "tau" -> new TauNode();
                 case "@" -> new InfixNode();
                 case "rec" -> new RecNode();
-                case "Y" -> new YNode();
+                case "<Y*>" -> new YNode();
                 case "=" -> new EqualNode();
                 case "," -> new CommaNode();
                 case "within" -> new WithinNode();
