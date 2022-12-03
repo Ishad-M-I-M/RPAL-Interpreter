@@ -13,7 +13,7 @@ public class UopNode extends InnerNode{
 
     @Override
     public void setChild(Node child) {
-        if(child == null) this.child = child;
+        if(this.child == null) this.child = child;
         else throw new IllegalStateException("Cannot assign more children to : "+ this.name);
     }
 
