@@ -1,5 +1,7 @@
 package csemachine.elements;
 
+import java.util.Arrays;
+
 public class Bop extends Element{
 
     private final String operation;
@@ -49,6 +51,19 @@ public class Bop extends Element{
                 case "&" -> op1 && op2;
                 default -> throw new IllegalArgumentException("Unsupported operands");
             };
+        }
+        else if (operand1 instanceof Tor && operand2 instanceof Primitive && this.operation.equals("aug")){
+            Object op = ((Primitive) operand2).value;
+            if ( op == null) return operand1;
+            else {
+                ((Tor) operand1).children.add((Primitive)operand2);
+                return operand1;
+            }
+        }
+        else if (operand1 == null && operand2 instanceof Primitive && this.operation.equals("aug")){
+            Tor tor = new Tor(1);
+            tor.children.add((Primitive)operand2);
+            return tor;
         }
         else {
             throw new IllegalArgumentException("Provided two arguments are in different types");

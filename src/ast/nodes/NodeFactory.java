@@ -14,7 +14,8 @@ public class NodeFactory {
 
     private static final Set<String> AcceptedBops = new HashSet<String>(Arrays.asList(
             "+", "-", "*", "/", "**",                                   //arithmetic operators
-            "or", "&",  "gr", "ge", "ls", "le", "eq", "ne"       // boolean operators
+            "or", "&",  "gr", "ge", "ls", "le", "eq", "ne",             // boolean operators
+            "aug"                                                       // tuple operation
     ));
 
     private static final Set<String> AcceptedUops = new HashSet<String>(Arrays.asList(
@@ -59,6 +60,7 @@ public class NodeFactory {
                 case "," -> new CommaNode();
                 case "within" -> new WithinNode();
                 case "and" -> new AndNode();
+                case "<nil>" -> new PrimitiveNode("STR", null);
                 default -> throw new IllegalArgumentException("Not a valid argument : " + type);
             };
         }

@@ -160,14 +160,17 @@ public class Machine {
                 Object operand1, operand2;
                 if (op1 instanceof Variable) operand1 = ((Variable) op1).value;
                 else if (op1 instanceof Primitive) operand1 = ((Primitive) op1).value;
+                else if (op1 instanceof Tor) operand1 = op1;
                 else throw new IllegalArgumentException("Unsupported operand");
 
-                if (op2 instanceof Variable) operand2 = ((Variable) op2).value;
+                if (op1 instanceof Tor || op1 instanceof Primitive && ((Primitive) op1).value == null) operand2 = op2;
+                else if (op2 instanceof Variable) operand2 = ((Variable) op2).value;
                 else if (op2 instanceof Primitive) operand2 = ((Primitive) op2).value;
                 else throw new IllegalArgumentException("Unsupported operand");
 
-                Element result = new Primitive(((Bop)element).apply(operand1, operand2));
-                stack.push(result, environment);
+                Object result = ((Bop)element).apply(operand1, operand2);
+                if(result instanceof Tor) stack.push((Element) result, environment);
+                else stack.push(new Primitive(result), environment);
             }
 
             // ********************** CSE Rule 7 **********************
