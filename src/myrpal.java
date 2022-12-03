@@ -4,7 +4,7 @@ import csemachine.Machine;
 
 import java.io.FileNotFoundException;
 
-public class Main {
+public class myrpal {
     public static void main(String[] args) {
         try{
             ASTTree astTree = ASTParser.parse(args[0]);

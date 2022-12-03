@@ -294,18 +294,16 @@ public class Machine {
      * @return corresponding element for the Node
      * */
     private Element getElement(Node node, int tag) throws IllegalArgumentException{
-        return switch (node){
-            case GammaNode n -> new Gamma();
-            case LambdaNode n ->  new Lambda(tag, getVariable(n.left, tag));
-            case ArrowNode n -> new Beta();
-            case UopNode n -> new Uop(n.name);
-            case BopNode n -> new Bop(n.name);
-            case TauNode n -> new Tor(n.getChildren().size());
-            case IDNode n -> new Variable(n.name);
-            case PrimitiveNode n -> new Primitive(n.value);
-            case YNode n -> new Y();
-            default -> throw new IllegalArgumentException("Unexpected value: " + node.name);
-        };
+        if (node instanceof GammaNode) return new Gamma();
+        else if (node instanceof LambdaNode) return new Lambda(tag, getVariable(((LambdaNode)node).left, tag));
+        else if (node instanceof ArrowNode) return new Beta();
+        else if (node instanceof UopNode) return new Uop(node.name);
+        else if (node instanceof BopNode) return new Bop(node.name);
+        else if (node instanceof TauNode) return new Tor(((TauNode) node).getChildren().size());
+        else if (node instanceof IDNode) return new Variable(node.name);
+        else if (node instanceof PrimitiveNode) return new Primitive(((PrimitiveNode) node).value );
+        else if (node instanceof YNode) return new Y();
+        else throw new IllegalArgumentException("Unexpected value: " + node.name);
     }
 
     /**
