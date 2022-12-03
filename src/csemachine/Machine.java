@@ -64,7 +64,6 @@ public class Machine {
                     // handling defined functions
                     String functionName = ((Variable) operator).name;
                     if (definedFunctions.contains(functionName)) functionCall(functionName);
-                    //TODO: handle function calls
                 }
 
                 else if(operator instanceof Lambda){
@@ -272,10 +271,12 @@ public class Machine {
                 toBeParsed.add(((LambdaNode) curr).right);
             }
             else if (curr instanceof ArrowNode){
+                toBeParsed.add(((ArrowNode) curr).trueNode);
+                control.push(new Delta(tag, null));
+                toBeParsed.add(((ArrowNode) curr).falseNode);
+                control.push(new Delta(tag+1, null));
                 control.push(getElement(curr, tag));
                 tag = flatten(tag, ((ArrowNode) curr).expression, control, toBeParsed);
-                toBeParsed.add(((ArrowNode) curr).trueNode);
-                toBeParsed.add(((ArrowNode) curr).falseNode);
             }
             else{
                 control.push(getElement(curr, tag));
