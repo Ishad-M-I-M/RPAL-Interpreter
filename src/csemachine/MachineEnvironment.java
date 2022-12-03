@@ -21,6 +21,13 @@ public class MachineEnvironment {
         this.current = new Node(environment, current);
     }
 
+    /**
+     * Move to parent environment
+     */
+    protected void moveToParent(){
+        this.current = current.getParent();
+    }
+
 
     /**
      * @return resolved variable value
@@ -36,6 +43,10 @@ public class MachineEnvironment {
             searchNode = searchNode.getParent();
         }
         return found;
+    }
+
+    protected int getEnvironmentTag(){
+        return current.environment.tag;
     }
 
     /**

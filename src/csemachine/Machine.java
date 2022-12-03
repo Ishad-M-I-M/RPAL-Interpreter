@@ -119,7 +119,7 @@ public class Machine {
                 // ********************** CSE Rule 12 **********************
                 else if(operator instanceof Y) {
                     Lambda lambda = (Lambda) stack.pop();
-                    Eta eta = new Eta(lambda.controlTag, lambda.controlTag, lambda.boundedVariable);
+                    Eta eta = new Eta(lambda.controlTag, lambda.environmentTag, lambda.boundedVariable);
                     stack.push(eta, environment);
                 }
 
@@ -150,6 +150,7 @@ public class Machine {
                 if(! (environment1 instanceof Environment)) throw new IllegalStateException("Unexpected element found while applying CSE Rule 5 :"+environment1.toString());
 
                 stack.push(value, environment);
+                environment.moveToParent();
             }
 
             // ********************** CSE Rule 6 **********************
@@ -188,8 +189,8 @@ public class Machine {
 
             // ********************** CSE Rule 8 **********************
             else if(element instanceof Beta){
-                Delta trueDelta = (Delta) control.pop();
                 Delta falseDelta = (Delta) control.pop();
+                Delta trueDelta = (Delta) control.pop();
 
                 boolean result = (boolean)((Primitive) stack.pop()).value;
                 if(result) pushToControl(controlStructures.get(trueDelta.tag));
@@ -249,8 +250,10 @@ public class Machine {
      * push control structure to the control
      * */
     private void pushToControl(Queue<Element> elements){
-        while (! elements.isEmpty()){
-            control.push(elements.poll());
+        Queue<Element> curr = new ArrayDeque<>();
+        curr.addAll(elements);
+        while (! curr.isEmpty()){
+            control.push(curr.poll());
         }
     }
 

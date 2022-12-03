@@ -3,6 +3,7 @@ package csemachine;
 import java.util.Stack;
 
 import csemachine.elements.Element;
+import csemachine.elements.Lambda;
 import csemachine.elements.Primitive;
 import csemachine.elements.Variable;
 
@@ -31,6 +32,12 @@ public class MachineStack {
             }
             else stack.push(element);
 
+        }
+        else if (element instanceof Lambda){
+            if (((Lambda) element).environmentTag == null){
+                ((Lambda) element).environmentTag = currEnv.getEnvironmentTag();
+            }
+            stack.push(element);
         }
         else{
             stack.push(element);
