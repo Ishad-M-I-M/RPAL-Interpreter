@@ -1,7 +1,7 @@
 package csemachine.elements;
 
 public class Uop extends Element{
-    private String operation;
+    private final String operation;
 
     public Uop(String operation){
         this.operation = operation;

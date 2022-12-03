@@ -18,7 +18,7 @@ public class ArrowNode extends InnerNode{
         if (expression == null) this.expression = child;
         else if (trueNode == null) this.trueNode = child;
         else if(falseNode == null) this.falseNode = child;
-        else throw new IllegalStateException("Cannot assign more children");
+        else throw new IllegalStateException("Cannot assign more children to : "+ this.name);
     }
 
     @Override

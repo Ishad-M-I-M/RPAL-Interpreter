@@ -18,7 +18,7 @@ public class InfixNode extends InnerNode implements Standardizable{
         if(E1 == null) this.E1 = child;
         else if(N == null) this.N = child;
         else if(E2 == null) this.E2 = child;
-        else throw new IllegalStateException("Cannot assign more children");
+        else throw new IllegalStateException("Cannot assign more children to : "+ this.name);
     }
 
     @Override

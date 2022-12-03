@@ -5,7 +5,7 @@ import csemachine.elements.Element;
 import java.util.Stack;
 
 public class MachineControl {
-    private Stack<Element> control;
+    private final Stack<Element> control;
 
     protected MachineControl(){
         control = new Stack<>();

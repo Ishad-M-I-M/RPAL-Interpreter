@@ -1,7 +1,6 @@
 package csemachine;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import ast.ASTTree;
 import ast.nodes.*;
@@ -136,7 +135,7 @@ public class Machine {
                 }
 
                 else{
-                    throw new IllegalArgumentException("Unsupported operator");
+                    throw new IllegalArgumentException("Unsupported operator "+ operator.toString());
                 }
             }
 
@@ -343,7 +342,7 @@ public class Machine {
         else if (functionName.equals("Conc")){
             Primitive primitive1 = (Primitive) stack.pop();
             Primitive primitive2 = (Primitive) stack.pop();
-            String res = (String) primitive1.value + (String) primitive2.value;
+            String res = primitive1.value + (String) primitive2.value;
             stack.push(new Primitive(res), environment);
         }
 

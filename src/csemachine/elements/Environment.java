@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Environment extends Element{
     public int tag;
-    private Map<String, Element> assignments;
+    private final Map<String, Element> assignments;
     public Environment(int tag){
         this.tag = tag;
         assignments = new HashMap<>();

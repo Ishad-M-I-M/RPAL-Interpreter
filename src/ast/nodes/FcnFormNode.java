@@ -17,7 +17,7 @@ public class FcnFormNode extends InnerNode implements Standardizable{
         if (functionName == null) this.functionName = (IDNode) child;
         else if (expression == null && (child instanceof LeafNode || child instanceof CommaNode)) variables.add(child);
         else if (expression == null) this.expression = child;
-        else throw new IllegalStateException("Cannot assign more children");
+        else throw new IllegalStateException("Cannot assign more children to : "+ this.name);
     }
 
     @Override

@@ -2,6 +2,7 @@ package ast.nodes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class RecNode extends InnerNode implements Standardizable{
@@ -13,11 +14,11 @@ public class RecNode extends InnerNode implements Standardizable{
     @Override
     public void setChild(Node child) {
         if (this.child == null) this.child = child;
-        else throw new IllegalStateException("Cannot assign more children");
+        else throw new IllegalStateException("Cannot assign more children to : "+ this.name);
     }
 
     public List<Node> getChildren(){
-        return new ArrayList<Node>(Arrays.asList(child));
+        return new ArrayList<Node>(Collections.singletonList(child));
     }
 
     @Override

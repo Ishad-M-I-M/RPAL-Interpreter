@@ -13,7 +13,7 @@ public class AndNode extends InnerNode implements Standardizable{
 
     @Override
     public void setChild(Node child) {
-        if(child instanceof EqualNode) children.add((EqualNode) child);
+        if(child instanceof EqualNode) children.add(child);
         else throw new IllegalArgumentException("Children of an AndNode should be EqualNodes");
     }
 

@@ -15,7 +15,7 @@ public class GammaNode extends InnerNode{
     public void setChild(Node child) {
         if (left == null) this.left = child;
         else if (right == null) this.right = child;
-        else throw new IllegalStateException("Cannot assign more children");
+        else throw new IllegalStateException("Cannot assign more children to : "+ this.name);
     }
 
     @Override

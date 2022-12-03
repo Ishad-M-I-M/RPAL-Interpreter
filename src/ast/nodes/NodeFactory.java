@@ -12,12 +12,12 @@ public class NodeFactory {
      * */
     private NodeFactory(){}
 
-    private static Set<String> AcceptedBops = new HashSet<String>(Arrays.asList(
+    private static final Set<String> AcceptedBops = new HashSet<String>(Arrays.asList(
             "+", "-", "*", "/", "**",                                   //arithmetic operators
             "or", "&",  "gr", "ge", "ls", "le", "eq", "ne"       // boolean operators
     ));
 
-    private static Set<String> AcceptedUops = new HashSet<String>(Arrays.asList(
+    private static final Set<String> AcceptedUops = new HashSet<String>(Arrays.asList(
             "neg",
             "not"
     ));

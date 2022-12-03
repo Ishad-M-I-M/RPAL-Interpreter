@@ -31,7 +31,6 @@ public class MachineEnvironment {
         while (found == null){
             found = searchNode.environment.getValue(variableName);
             if(searchNode.getParent() == null && found == null){
-//                throw new IllegalArgumentException("Variable in not reachable from current environment :"+variableName);
                 break;
             }
             searchNode = searchNode.getParent();
@@ -43,8 +42,8 @@ public class MachineEnvironment {
      * Inner class to represent Nodes in the tree
      * */
     class Node{
-        private Node parent;
-        private Environment environment;
+        private final Node parent;
+        private final Environment environment;
         Node(Environment environment, Node parent){
             this.environment = environment;
             this.parent = parent;
