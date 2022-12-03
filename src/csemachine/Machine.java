@@ -1,6 +1,7 @@
 package csemachine;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import ast.ASTTree;
 import ast.nodes.*;
@@ -329,6 +330,11 @@ public class Machine {
             Element element = stack.pop();
             if (element instanceof Primitive){
                 System.out.println(((Primitive) element).value);
+                stack.push(element, environment);
+            }
+            else if (element instanceof Tor){
+                List<String> values = ((Tor) element).children.stream().map(element1 -> ((Primitive)element1).value.toString()).toList();
+                System.out.println("(" + String.join(", ", values) + ")");
                 stack.push(element, environment);
             }
             else throw new IllegalArgumentException("Operation is not applicable");
