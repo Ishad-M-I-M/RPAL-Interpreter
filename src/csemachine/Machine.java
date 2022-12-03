@@ -16,7 +16,7 @@ public class Machine {
     private final MachineStack stack;
     private final MachineEnvironment environment;
 
-    private final ArrayList<String> definedFunctions = new ArrayList<>(Arrays.asList("Print", "Conc", "Stern", "Stem"));
+    private final ArrayList<String> definedFunctions = new ArrayList<>(Arrays.asList("Print", "Conc", "Stern", "Stem", "Order"));
 
     /**
      * Input need to be a Standardized tree
@@ -92,8 +92,8 @@ public class Machine {
                         Tor tor = (Tor) stack.pop();
                         for (Variable v:
                                 ((Comma) ((Lambda) operator).boundedVariable).children) {
-                            Primitive primitive = tor.children.remove(0);
-                            newEnv.addAssignment(v.name, primitive);
+                            Element operand = tor.children.remove(0);
+                            newEnv.addAssignment(v.name, operand);
                         }
                         control.push(newEnv);
                         stack.push(newEnv, environment);
@@ -197,7 +197,7 @@ public class Machine {
             // ********************** CSE Rule 9 **********************
             else if (element instanceof Tor) {
                 for(int i=0; i < ((Tor) element).count; i++){
-                    ((Tor) element).children.add((Primitive) stack.pop());
+                    ((Tor) element).children.add(stack.pop());
                 }
                 stack.push(element, environment);
             }
@@ -334,7 +334,34 @@ public class Machine {
             }
             else throw new IllegalArgumentException("Operation is not applicable");
         }
-        //TODO: implement other defined functions
+
+        else if (functionName.equals("Conc")){
+            Primitive primitive1 = (Primitive) stack.pop();
+            Primitive primitive2 = (Primitive) stack.pop();
+            String res = (String) primitive1.value + (String) primitive2.value;
+            stack.push(new Primitive(res), environment);
+        }
+
+        else if (functionName.equals("Stem")){
+            Primitive primitive1 = (Primitive) stack.pop();
+            String res = String.valueOf(((String) primitive1.value).charAt(0));
+            stack.push(new Primitive(res), environment);
+        }
+
+        else if (functionName.equals("Stern")) {
+            Primitive primitive1 = (Primitive) stack.pop();
+            String res = ((String) primitive1.value).substring(1);
+            stack.push(new Primitive(res), environment);
+        }
+
+        else if (functionName.equals("Order")){
+            Element element = stack.pop();
+            if (element instanceof  Tor){
+                int order = ((Tor) element).children.size();
+                stack.push(new Primitive(order), environment);
+            }
+            else throw new IllegalArgumentException("Operation is not applicable");
+        }
         else{
             throw new IllegalArgumentException("Not a valid functions");
         }
