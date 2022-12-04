@@ -19,7 +19,7 @@ public class myrpal {
 //            System.out.println(machine.getControlStructures());
 
             // evaluating
-            System.out.println("\nOutput of the program:");
+            System.out.println("Output of the program:");
             machine.evaluate();
         }
         catch (FileNotFoundException | IllegalArgumentException | IllegalStateException e){
