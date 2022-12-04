@@ -282,7 +282,7 @@ public class Machine {
                 toBeParsed.add(((ArrowNode) curr).falseNode);
                 control.push(new Delta(tag+1, null));
                 control.push(getElement(curr, tag));
-                tag = flatten(tag, ((ArrowNode) curr).expression, control, toBeParsed);
+                tag = flatten(tag+2, ((ArrowNode) curr).expression, control, toBeParsed);
             }
             else{
                 control.push(getElement(curr, tag));
