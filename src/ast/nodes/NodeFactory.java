@@ -38,7 +38,7 @@ public class NodeFactory {
             matcher.find();
             String primitive = matcher.group(1);
             String value = matcher.group(2);
-            return new PrimitiveNode(primitive, value);
+            return new PrimitiveNode(primitive, value.replace("'", ""));
         }
 
 

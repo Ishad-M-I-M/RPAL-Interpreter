@@ -27,11 +27,9 @@ public class MachineStack {
     protected void push(Element element, MachineEnvironment currEnv){
         if(element instanceof Variable){
             Element value = currEnv.findValue(((Variable) element).name);
-            if ( value != null) {
-                stack.push(value);
-            }
-            else stack.push(element);
-
+            if ( Machine.definedFunctions.contains(((Variable) element).name)) stack.push(element);
+            else if (value != null) stack.push(value);
+            else throw new IllegalArgumentException("Variable not resolvable :"+((Variable) element).name);
         }
         else if (element instanceof Lambda){
             if (((Lambda) element).environmentTag == null){

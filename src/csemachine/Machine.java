@@ -14,9 +14,9 @@ public class Machine {
     private final ASTTree astTree;
     private final MachineControl control;
     private final MachineStack stack;
-    private final MachineEnvironment environment;
+    private MachineEnvironment environment;
 
-    private final ArrayList<String> definedFunctions = new ArrayList<>(Arrays.asList("Print", "Conc", "Stern", "Stem", "Order"));
+    public static final ArrayList<String> definedFunctions = new ArrayList<>(Arrays.asList("Print", "Conc", "Stern", "Stem", "Order", "Isstring"));
 
     /**
      * Input need to be a Standardized tree
@@ -25,7 +25,6 @@ public class Machine {
         this.astTree = astTree;
         control = new MachineControl();
         stack = new MachineStack();
-        environment = new MachineEnvironment();
     }
 
     /**
@@ -36,8 +35,8 @@ public class Machine {
 
         int envTag = 0;
         Environment initialEnv = new Environment(envTag++);
+        this.environment = new MachineEnvironment(initialEnv);
         stack.push(initialEnv, environment);
-        environment.addNewEnvironment(initialEnv);
         control.push(initialEnv);
 
         pushToControl(controlStructures.get(0));
@@ -346,6 +345,10 @@ public class Machine {
         }
 
         else if (functionName.equals("Conc")){
+            // need two gammas to apply the operation
+            Element e = control.pop();
+            if (!(e instanceof Gamma)) throw new IllegalStateException("`Conc` operation is not applicable in current state");
+
             Primitive primitive1 = (Primitive) stack.pop();
             Primitive primitive2 = (Primitive) stack.pop();
             String res = primitive1.value + (String) primitive2.value;
@@ -371,6 +374,16 @@ public class Machine {
                 stack.push(new Primitive(order), environment);
             }
             else throw new IllegalArgumentException("Operation is not applicable");
+        }
+
+        else if (functionName.equals("Isstring")){
+            Primitive primitive = (Primitive) stack.pop();
+            if (primitive.value instanceof String) {
+                stack.push(new Primitive(true), environment);
+            }else {
+                stack.push(new Primitive(false), environment);
+            }
+
         }
         else{
             throw new IllegalArgumentException("Not a valid functions");

@@ -9,11 +9,11 @@ public class Uop extends Element{
 
     public Object apply(Object operand){
         if (operand instanceof  Integer){
-            if (operation == "neg") return - (int) operand;
+            if (operation.equals("neg")) return - (int) operand;
             else throw new IllegalArgumentException("Unsupported operand");
         }
         else if (operand instanceof Boolean){
-            if (operation == "not") return ! (boolean) operand;
+            if (operation.equals("not")) return ! (boolean) operand;
             else throw new IllegalArgumentException("Unsupported operand");
         }
         else throw new IllegalArgumentException("Unsupported operand");

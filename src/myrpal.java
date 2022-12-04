@@ -8,15 +8,15 @@ public class myrpal {
     public static void main(String[] args) {
         try{
             ASTTree astTree = ASTParser.parse(args[0]);
-            astTree.traverse();
+//            astTree.traverse();
             astTree.standardize();
-            System.out.println("\nStandardized Tree\n");
-            astTree.traverse();
+//            System.out.println("\nStandardized Tree\n");
+//            astTree.traverse();
 
             // CSE Machine
-            System.out.println("\n CSE Machine control structures \n");
+//            System.out.println("\n CSE Machine control structures \n");
             Machine machine = new Machine(astTree);
-            System.out.println(machine.getControlStructures());
+//            System.out.println(machine.getControlStructures());
 
             // evaluating
             System.out.println("\nOutput of the program:");
